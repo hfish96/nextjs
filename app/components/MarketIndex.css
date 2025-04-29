@@ -1,0 +1,48 @@
+.chart-container {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.chart-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 上升趋势图表的特效 */
+.chart-up:hover {
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.3));
+  animation: pulse-green 2s infinite;
+}
+
+/* 下降趋势图表的特效 */
+.chart-down:hover {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.4;
+  }
+} 
