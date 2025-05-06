@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faSearch, faGear, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faSearch, faGear, faBars, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
   return (
@@ -32,11 +33,32 @@ export default function Navbar() {
           
           {/* 导航项 */}
           <div className="hidden md:flex items-center space-x-1">
-            <a href="#" className="px-3 py-2 text-sm font-medium rounded-lg hover:bg-dark-700 transition-all duration-200">帮助</a>
-            <a href="#" className="morph-button px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg hover:from-primary-500 hover:to-primary-600">
+            <Link 
+              href="/"
+              className="px-3 py-2 text-sm font-medium rounded-lg hover:bg-dark-700 transition-all duration-200"
+            >
+              首页
+            </Link>
+            <Link 
+              href="/news"
+              className="px-3 py-2 text-sm font-medium rounded-lg hover:bg-dark-700 transition-all duration-200 flex items-center"
+            >
+              <FontAwesomeIcon icon={faNewspaper} className="mr-1" />
+              热点资讯
+            </Link>
+            <Link 
+              href="#" 
+              className="px-3 py-2 text-sm font-medium rounded-lg hover:bg-dark-700 transition-all duration-200"
+            >
+              帮助
+            </Link>
+            <Link 
+              href="#" 
+              className="morph-button px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg hover:from-primary-500 hover:to-primary-600"
+            >
               <FontAwesomeIcon icon={faGear} className="mr-1" />
               设置
-            </a>
+            </Link>
           </div>
           
           {/* 移动端菜单按钮 */}

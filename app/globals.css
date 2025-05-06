@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
@@ -68,6 +69,78 @@
   transition: all 0.4s ease;
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* 新闻标签效果 */
+.tag-hot, .tag-new {
+  display: inline-flex;
+  padding: 0 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-left: 6px;
+  transform: scale(0.85);
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+.tag-hot {
+  background-color: rgba(239, 69, 103, 0.15);
+  color: #ef4567;
+}
+
+.tag-new {
+  background-color: rgba(55, 66, 250, 0.15);
+  color: #3742fa;
+}
+
+/* 新闻标题和标签容器 */
+.news-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.news-title {
+  margin-right: 4px;
+}
+
+/* 平台卡片内容 */
+.news-list {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.news-item {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.news-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px);
+}
+
+.news-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 平台卡片头部渐变色 */
+.card-header-weibo {
+  background: linear-gradient(to right, #ba4f4e, #e05e5c);
+}
+
+.card-header-zhihu {
+  background: linear-gradient(to right, #4b6da1, #6989c3);
+}
+
+.card-header-baidu {
+  background: linear-gradient(to right, #3e6db5, #5384d1);
+}
+
+.card-header-douyin {
+  background: linear-gradient(to right, #333333, #505050);
 }
 
 :root {
