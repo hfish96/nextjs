@@ -1,7 +1,7 @@
 // API 配置
 
 // 基础URL
-export const API_BASE_URL = 'http://116.205.143.103:3000/api/v1';
+export const API_BASE_URL = '//116.205.143.103:3000/api/v1';
 
 // 默认请求头
 export const DEFAULT_HEADERS = {
