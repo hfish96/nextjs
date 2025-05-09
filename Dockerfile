@@ -5,10 +5,18 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files to leverage Docker layer caching
-COPY package.json package-lock.json* ./
+COPY package.json ./
+# 检查是否存在package-lock.json，若不存在则跳过复制
+COPY package-lock.json* ./ 2>/dev/null || :
 
-# Install dependencies
-RUN npm ci
+# Install dependencies with fallbacks and verbose output
+RUN echo "Installing dependencies..." && \
+    # 如果有package-lock.json，使用npm ci，否则使用npm install
+    if [ -f package-lock.json ]; then \
+      npm ci --verbose || npm install --verbose; \
+    else \
+      npm install --verbose; \
+    fi
 
 # Copy all files
 COPY . .
