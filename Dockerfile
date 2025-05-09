@@ -6,8 +6,11 @@ WORKDIR /app
 
 # Copy package files to leverage Docker layer caching
 COPY package.json ./
-# 检查是否存在package-lock.json，若不存在则跳过复制
-COPY package-lock.json* ./ 2>/dev/null || :
+
+# 使用更安全的方式处理package-lock.json
+# 先创建一个占位文件以防止文件不存在导致的错误
+RUN touch package-lock-placeholder.json
+COPY package-lock.json* ./
 
 # Install dependencies with fallbacks and verbose output
 RUN echo "Installing dependencies..." && \
