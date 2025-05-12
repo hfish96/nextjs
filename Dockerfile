@@ -1,58 +1,39 @@
-# Stage 1: Building the application
-FROM node:18-alpine AS builder
-
-# Set working directory
+# 依赖安装阶段
+FROM node:18-alpine AS deps
 WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-# Copy package files to leverage Docker layer caching
-COPY package.json ./
-
-# 使用更安全的方式处理package-lock.json
-# 先创建一个占位文件以防止文件不存在导致的错误
-RUN touch package-lock-placeholder.json
-COPY package-lock.json* ./
-
-# Install dependencies with fallbacks and verbose output
-RUN echo "Installing dependencies..." && \
-    # 如果有package-lock.json，使用npm ci，否则使用npm install
-    if [ -f package-lock.json ]; then \
-      npm ci --verbose || npm install --verbose; \
-    else \
-      npm install --verbose; \
-    fi
-
-# Copy all files
+# 构建阶段
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the Next.js application
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 
-# Stage 2: Running the application
+# 生产阶段
 FROM node:18-alpine AS runner
-
 WORKDIR /app
-
-# Set environment to production
 ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# Create a non-root user to run the application
+# 创建非root用户
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy only necessary files from the builder stage
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
+# 利用standalone模式，仅复制必要文件
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Set proper permissions
-RUN chown -R nextjs:nodejs /app
-
-# Switch to non-root user
 USER nextjs
-
-# Expose the port the app will run on
 EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
 
-# Start the application
-CMD ["npm", "start"] 
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+
+CMD ["node", "server.js"] 
