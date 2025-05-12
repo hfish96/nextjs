@@ -1,8 +1,16 @@
 # 依赖安装阶段
 FROM node:18-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json ./
+# 先检查是否存在 package-lock.json
+COPY package-lock.json* ./
+
+# 使用更安全的依赖安装方式，有备选方案
+RUN if [ -f package-lock.json ]; then \
+      npm ci || npm install; \
+    else \
+      npm install; \
+    fi
 
 # 构建阶段
 FROM node:18-alpine AS builder
