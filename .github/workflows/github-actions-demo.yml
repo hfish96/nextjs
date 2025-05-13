@@ -83,7 +83,7 @@ jobs:
               echo "✅ Application is responding"
             else
               echo "❌ Application is not responding"
-      #         exit 1
+              exit 1
             fi
             
             echo "🚀 Deployment successful!"
