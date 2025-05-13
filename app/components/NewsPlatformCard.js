@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt, faChevronRight, faRss } from '@fortawesome/free-solid-svg-icons';
-import { faWeibo, faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faWeibo, faTiktok, faZhihu, faBilibili } from '@fortawesome/free-brands-svg-icons';
 
 // Helper component for news item
 const NewsItem = ({ item }) => {
@@ -26,15 +26,15 @@ const NewsItem = ({ item }) => {
       <span className="text-xs font-semibold bg-white bg-opacity-10 h-5 w-5 flex items-center justify-center rounded mr-3 mt-0.5">
         {item.rank}
       </span>
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         {(item.is_hot || item.is_new) ? (
-          <div className="news-content">
-            <span className="news-title text-gray-200">{item.title}</span>
-            {item.is_hot && <span className="tag-hot">热</span>}
-            {item.is_new && <span className="tag-new">新</span>}
+          <div className="news-content flex items-center">
+            <span className="news-title text-gray-200 truncate block">{item.title}</span>
+            {item.is_hot && <span className="tag-hot flex-shrink-0 ml-1">热</span>}
+            {item.is_new && <span className="tag-new flex-shrink-0 ml-1">新</span>}
           </div>
         ) : (
-          <span className="text-gray-200">{item.title}</span>
+          <span className="text-gray-200 truncate block">{item.title}</span>
         )}
       </div>
     </ContentWrapper>
@@ -44,11 +44,15 @@ const NewsItem = ({ item }) => {
 export default function NewsPlatformCard({ platform, onRefresh, isLoading }) {
   // Define platform icon based on id
   const getPlatformIcon = (id) => {
+    console.log(faWeibo)
+    console.log(id)
     switch(id) {
       case 'weibo':
         return <FontAwesomeIcon icon={faWeibo} className="text-xl mr-2" />;
       case 'zhihu':
-        return <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-sm mr-2">知</span>;
+        return <FontAwesomeIcon icon={faZhihu} className="text-xl mr-2" />;
+      case 'bilibili':
+        return <FontAwesomeIcon icon={faBilibili} className="text-xl mr-2" />;
       case 'baidu':
         return <span className="flex items-center justify-center w-6 h-6 rounded-sm bg-blue-600 text-white font-bold text-xs mr-2">百度</span>;
       case 'douyin':
